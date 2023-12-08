@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+
+    {{ form.username.errors }}
+    {% render_field form.username class+='input input-bordered' placeholder='Enter a username' %}
+
+    <button class="btn btn-primary">Create User</button>
+  </form>
+{% endblock %}

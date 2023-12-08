@@ -1,0 +1,9 @@
+{% load humanize %}
+
+{% for message in messages %}
+<li class="chat-message alert shadow justify-start">
+  <span class="badge font-bold">{{ message.creator.username }}</span>
+  <span class="grow">{{ message.content }}</span>
+  <span class="text-xs">{{ message.created|time:'H:i:s' }}</span>
+</li>
+{% endfor %}

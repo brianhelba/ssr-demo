@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+  <div x-data="{
+    search: '',
+    async getBooks() {
+      return (
+        await(
+          await fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(this.search)}`)
+        ).json()
+      ).docs;
+    },
+  }">
+    <input x-model.debounce="search" class="input input-bordered" />
+
+    <ul>
+      <template x-for="book in getBooks">
+        <li>
+          <span x-text="book.title"></span>
+          <img :src="`https://covers.openlibrary.org/b/olid/${book.cover_edition_key}-S.jpg`" />
+        </li>
+      </template>
+    </ul>
+  </div>
+{% endblock %}

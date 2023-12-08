@@ -1,0 +1,27 @@
+{% load widget_tweaks %}
+
+<form
+  hx-post="{% url 'create-message'%}"
+  hx-swap="outerHTML"
+  x-data="{
+    content: '{{ form.content.value|default_if_none:'' }}',
+    sending: false,
+    get isValid() { return this.content !== '' && !this.sending; },
+  }"
+  @htmx:before-request.camel="sending = true"
+  class="form-control"
+>
+  {% csrf_token %}
+
+  {{ form.content.errors }}
+  <div class="input-group w-full">
+    {% render_field form.content x-model='content' class+='input input-bordered w-full' placeholder='Type your message' %}
+    <button
+      disabled
+      :disabled="!isValid"
+      class="btn btn-primary"
+    >
+      Send
+    </button>
+  </div>
+</form>

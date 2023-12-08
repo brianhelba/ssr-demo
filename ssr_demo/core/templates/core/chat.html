@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+{% load humanize %}
+
+{% block content %}
+  <div
+    class="h-screen flex flex-col"
+    x-data="{
+      autoscroll: true,
+    }"
+  >
+    <div class="navbar bg-neutral text-neutral-content px-4 gap-6">
+      <span class="grow text-lg font-bold">Django SSR Chat</span>
+      <a href="{% url 'register' %}" class="text-xs">Books</a>
+      <label class="label cursor-pointer">
+        <span class="mr-2">Autoscroll</span>
+        <input type="checkbox" checked="checked" class="checkbox" x-model='autoscroll' />
+      </label>
+      {% if user.is_authenticated %}
+      <span class="badge badge-accent font-bold">{{ user.get_username }}</span>
+      {% else %}
+      <a class="btn btn-primary btn-xs" href="{% url 'register' %}">Login to send messages</a>
+      {% endif %}
+    </div>
+    <div class="grow container mx-auto py-4 flex flex-col gap-4">
+      <ul
+        hx-get="{% url 'list-messages'%}"
+        hx-trigger="every 1s"
+        @htmx:after-settle.camel="autoscroll && $event.target.lastElementChild.scrollIntoView(false)"
+        class="grow basis-0 overflow-y-auto scroll-smooth flex flex-col gap-3"
+      >
+        {% include 'core/chat_list_messages.html' %}
+      </ul>
+      {% if user.is_authenticated %}
+      <div>
+        {% include 'core/chat_create_message.html' %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

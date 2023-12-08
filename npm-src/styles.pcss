@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+  .errorlist {
+    @apply pb-2 space-y-2;
+
+    li {
+      @apply alert alert-error py-3 rounded-md text-sm;
+    }
+  }
+}
+
+@layer utilities {
+  /* https://alpinejs.dev/directives/cloak */
+  [x-cloak] {
+    display: none !important;
+  }
+}
